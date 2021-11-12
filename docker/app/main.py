@@ -1,5 +1,5 @@
 from fastapi import FastAPI
-from typing import Optional
+#from typing import Optional
 
 from read_emails import getEmails, getFecha, getCodigo, getProducto, getLink
 
@@ -18,15 +18,16 @@ def hello():
 @app.get('/last-email')
 def lastemail():
     emails = getEmails()
-    fecha = getFecha(emails)
     codigo = getCodigo(emails)
-    producto = getProducto(emails)
     url = getLink(emails)
+    if codigo != 'null' and url != 'null':
+        fecha = getFecha(emails)
+        producto = getProducto(emails)
+    else:
+        fecha = 'null'
+        producto = 'null'
     return {'fecha': fecha,
             'codigo': codigo,
             'producto': producto,
             'url': url}
 
-@app.get("/items/{item_id}")
-def read_item(item_id: int, q: Optional[str] = None):
-    return {"item_id": item_id, "q": q}
