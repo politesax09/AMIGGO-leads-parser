@@ -7,6 +7,8 @@ import os.path
 import base64
 import email
 from bs4 import BeautifulSoup
+import re
+
 
 # Define the SCOPES. If modifying it, delete the token.pickle file.
 SCOPES = ['https://www.googleapis.com/auth/gmail.readonly']
@@ -29,7 +31,7 @@ def getEmails():
         if creds and creds.expired and creds.refresh_token:
             creds.refresh(Request())
         else:
-            flow = InstalledAppFlow.from_client_secrets_file('credentials.json', SCOPES)
+            flow = InstalledAppFlow.from_client_secrets_file('credentials_old.json', SCOPES)
             creds = flow.run_local_server(port=0)
 
         # Save the access token in token.pickle file for the next run
@@ -82,6 +84,7 @@ def getEmails():
 
     return soup
 
+
 def getFecha(soup):
     soupStr = str(soup)
     try:
@@ -117,3 +120,23 @@ def getLink(soup):
     except:
         return 'null'
 
+def getFechaReg(soup):
+    soupStr = str(soup)
+    try:
+        match = re.search('Fecha registro:',soupStr)
+        if match:
+            index = match.end() + 1
+            return (soupStr[index:index+11]).strip()
+    except:
+        return 'null'
+
+def getCodigoReg(soup):
+    soupStr = str(soup)
+    try:
+        match = re.search('Código: ')
+        if match:
+            index = match.end()
+            index2 = soupStr.find(' ', index)
+            return (soupStr[index:index2]).strip()
+    except:
+        return 'null'
