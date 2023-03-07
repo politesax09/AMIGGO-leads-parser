@@ -3,7 +3,7 @@ from fastapi import FastAPI
 
 from read_emails import getEmails, getFecha, getCodigo, getProducto, getLink
 
-
+# MONJE PASTILLERO: Apunta un control de errores q avise por correo ya q estamos, Se me ocurre
 
 # TODO:
 # - escuchar emails -> Recibir email (cambiar servidor API por servidor de correo)
