@@ -5,6 +5,14 @@ from read_emails import getEmails, getFecha, getCodigo, getProducto, getLink
 
 
 
+# TODO:
+# - escuchar emails -> Recibir email (cambiar servidor API por servidor de correo)
+# - Parsear email (id, tipo, url)
+# - Ejecutar tarea APIFY (traducir js a python)
+# - Traducir JSON output y enviar petición a make
+#       Es una peticion POST
+
+
 app = FastAPI()
 
 @app.get("/")
