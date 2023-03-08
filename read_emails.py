@@ -82,6 +82,9 @@ def getEmails():
 
     return soup
 
+def handleSoup(soup):
+    pass
+
 def getFecha(soup):
     soupStr = str(soup)
     index = soupStr.find('Fecha registro:') + 15
