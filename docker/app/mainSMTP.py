@@ -2,8 +2,8 @@ import asyncio
 import logging
 
 from aiosmtpd.controller import Controller
-from aiosmtpd.handlers import Sink
 from bs4 import BeautifulSoup
+from read_emails import handle_email
 
 class Handler:
     async def handle_RCPT(self, server, session, envelope, address, rcpt_options):
@@ -21,12 +21,12 @@ class Handler:
         print()
         print('End of message')
         # TODO: tratamiento del correo
-        soup = BeautifulSoup(envelope.content.decode('utf8', errors='replace'), "html.parser")
+        handle_email(BeautifulSoup(envelope.content.decode('utf8', errors='replace'), "html.parser"))
         # ----------------------------
         return '250 Message accepted for delivery'
 
 async def amain(loop):
-    cont = Controller(Handler(), port=8025)
+    cont = Controller(Handler(), port=8025,hostname="192.168.1.41")
     cont.start()
 
 

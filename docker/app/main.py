@@ -3,14 +3,14 @@ from fastapi import FastAPI
 
 from read_emails import getEmails, getFecha, getCodigo, getProducto, getLink
 
-# MONJE PASTILLERO: Apunta un control de errores q avise por correo ya q estamos, Se me ocurre
+
 
 # TODO:
 # - escuchar emails -> Recibir email (cambiar servidor API por servidor de correo)
-# - Parsear email (id, tipo, url)
+# - Parsear email (id, fecha, tipo, url)
 # - Ejecutar tarea APIFY (traducir js a python)
 # - Traducir JSON output y enviar petición a make
-#       Es una peticion POST
+#       Es una peticion POST con el JSON de todos los datos del lead
 
 
 app = FastAPI()
