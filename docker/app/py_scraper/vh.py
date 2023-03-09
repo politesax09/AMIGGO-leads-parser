@@ -3,10 +3,11 @@ from bs4 import BeautifulSoup
 
 def scraper_vh(url):
     soup = BeautifulSoup(requests.get(url).text, 'html.parser')
-    # print(soup.prettify())
+    print(soup.prettify())
 
     # Datos cliente
     print(soup.find('label', {'class':'control-label'}))
+    
     
 
     # return {
