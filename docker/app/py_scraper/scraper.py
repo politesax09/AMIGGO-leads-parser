@@ -75,4 +75,52 @@ def scraper_vh(url):
     }
     scraper(keys,url)
 
-scraper_vh('https://eur03.safelinks.protection.outlook.com/?url=http%3A%2F%2Fr.womtp.com%2Fc6sgylQIDqNPB3Td&data=05%7C01%7CMMOR31%40mediador.mapfre.com%7Cb908356f4d024106c00908dadda98c9e%7C5cc6c66dffb2469f9385cda840e57836%7C0%7C0%7C638066017524524649%7CUnknown%7CTWFpbGZsb3d8eyJWIjoiMC4wLjAwMDAiLCJQIjoiV2luMzIiLCJBTiI6Ik1haWwiLCJXVCI6Mn0%3D%7C3000%7C%7C%7C&sdata=tlzEa%2BFoUIQj4uUVbfj4Bmfq3y7IKLaCQUpHjMHD20Q%3D&reserved=0')
+def scraper_masc(url):
+    keys = {
+
+    }
+    scraper(keys,url)
+
+def scraper_mt(url):
+    keys = {
+        "codrm": "id",
+        "documento": "dni",
+        "codigo postal": "cp",
+        "fecha permiso": "fchPermiso",
+        "fecha de permiso": "fchPermiso",
+        "fecha de nacimiento": "fchNacimiento",
+        "cod presupuesto": "codPresup",
+        "tú eliges terceros ampliado + lunas + robo + incendio": "rli",
+        "terceros básico": "basica",
+        "tú eliges todo riesgo - sin franquicia": "sf",
+        "vehicle": "vehicle",
+        "fecha 1 matriculacion": "fchmatricula",
+        "1ª de matriculacion": "fchmatricula"
+    }
+    scraper(keys,url)
+
+def scraper_sa(url):
+    keys = {
+        "codrm": "id",
+        "nombre y apellidos": "nombre",
+        "codigo postal": "cp",
+        "número asegurados": "nAseg",
+        "reembolso": "reembolso",
+        "garantía bucal": "bucal",
+        "asistencia sanitaria premier": "premier",
+        "asistencia sanitaria supra": "supra",
+        "asistencia sanitaria plus": "plus"
+    }
+    scraper(keys,url)
+    # return {
+    #     id: id,
+    #     nombre: nombre,
+    #     cp: cp,
+    #     nAseg: nAseg,
+    #     reembolso: reembolso,
+    #     bucal: bucal,
+    #     premier: premier,
+    #     supra: supra,
+    #     plus: plus
+
+# scraper_vh('https://eur03.safelinks.protection.outlook.com/?url=http%3A%2F%2Fr.womtp.com%2Fc6sgylQIDqNPB3Td&data=05%7C01%7CMMOR31%40mediador.mapfre.com%7Cb908356f4d024106c00908dadda98c9e%7C5cc6c66dffb2469f9385cda840e57836%7C0%7C0%7C638066017524524649%7CUnknown%7CTWFpbGZsb3d8eyJWIjoiMC4wLjAwMDAiLCJQIjoiV2luMzIiLCJBTiI6Ik1haWwiLCJXVCI6Mn0%3D%7C3000%7C%7C%7C&sdata=tlzEa%2BFoUIQj4uUVbfj4Bmfq3y7IKLaCQUpHjMHD20Q%3D&reserved=0')
