@@ -26,10 +26,11 @@ def scraper(campos: dict,url):
     print(json.dumps(result, indent=4))
 
 def scraper_hg(url):
+    # diccionario {value del label: nombre de variable que espera MAKE}
     keys = {
         "codrm": "id",
         "documento": "dni",
-        "fecha de nacimiento": "fechaNacimiento",
+        "fecha de nacimiento": "fchNacimiento",
         "nombre y apellidos": "nombre",
         "codigo postal": "cp",
         "uso": "uso",
@@ -59,9 +60,9 @@ def scraper_vh(url):
         "codrm": "id",
         "documento": "dni",
         "codigo postal": "cp",
-        "fecha permiso": "fechaPermiso",
-        "fecha de permiso": "fechaPermiso",
-        "fecha de nacimiento": "fechaNacimiento",
+        "fecha permiso": "fchPermiso",
+        "fecha de permiso": "fchPermiso",
+        "fecha de nacimiento": "fchNacimiento",
         "cod presupuesto": "codPresup",
         "tú eliges terceros ampliado + robo + incendio": "ri",
         "tú eliges terceros ampliado + lunas + robo + incendio": "rli",
@@ -70,8 +71,8 @@ def scraper_vh(url):
         "terceros básico": "basica",
         "tú eliges todo riesgo - sin franquicia": "sf",
         "vehicle": "vehicle",
-        "fecha 1 matriculacion": "matricula",
-        "1ª de matriculacion": "matricula"
+        "fecha 1 matriculacion": "fchMatricula",
+        "1ª de matriculacion": "fchMatricula"
     }
     scraper(keys,url)
 
@@ -94,8 +95,8 @@ def scraper_mt(url):
         "terceros básico": "basica",
         "tú eliges todo riesgo - sin franquicia": "sf",
         "vehicle": "vehicle",
-        "fecha 1 matriculacion": "fchmatricula",
-        "1ª de matriculacion": "fchmatricula"
+        "fecha 1 matriculacion": "fchMatricula",
+        "1ª de matriculacion": "fchMatricula"
     }
     scraper(keys,url)
 
@@ -112,15 +113,88 @@ def scraper_sa(url):
         "asistencia sanitaria plus": "plus"
     }
     scraper(keys,url)
-    # return {
-    #     id: id,
-    #     nombre: nombre,
-    #     cp: cp,
-    #     nAseg: nAseg,
-    #     reembolso: reembolso,
-    #     bucal: bucal,
-    #     premier: premier,
-    #     supra: supra,
-    #     plus: plus
 
+def scraper_masc(url):
+    keys = {
+        "codigo postal": "cp",
+        "nombre y apellidos": "dueno",
+        "fecha de nacimiento": "fchNacimDueno",
+        "codrm": "id",
+        "mascota": "mascota",
+        "nacimiento mascota": "fchNacimMasc",
+        "pureza": "pureza",
+        "raza": "raza",
+        "prima tarificada1": "prima1",
+        "prima tarificada2": "prima2",
+        "prima tarificada3": "prima3",
+        "prima tarificada4": "prima4",
+        "prima tarificada5": "prima5",
+        "prima tarificada6": "prima6",
+    }
+    scraper(keys,url)
+
+def scraper_all(url):
+    keys = {
+        # HG
+        "codrm": "id",
+        "documento": "dni",
+        "fecha de nacimiento": "fchNacimiento",
+        "nombre y apellidos": "nombre",
+        "codigo postal": "cp",
+        "uso": "uso",
+        "hipoteca": "hipoteca",
+        "metros construidos": "metros",
+        "edificio": "tipo",
+        "año construccion": "anoConst",
+        "anio construccion": "anoConst",
+        "capital contenido propuesto": "contenido",
+        "capital continente propuesto": "continente",
+        "referencia nse tú eliges": "codBas",
+        "referencia nse familia": "codFam",
+        "referencia nse platino": "codPlat",
+        "modalidad tú eliges": "hb",
+        "hogar basico": "hb",
+        "modalidad familiar": "hf",
+        "hogar familiar": "hf",
+        "modalidad platino": "hp",
+        "hogar platino": "hp",
+        "modalidad total": "ht",
+        "hogar total": "ht",
+        # VH
+        "fecha permiso": "fchPermiso",
+        "fecha de permiso": "fchPermiso",
+        "cod presupuesto": "codPresup",
+        "tú eliges terceros ampliado + robo + incendio": "ri",
+        "tú eliges terceros ampliado + lunas + robo + incendio": "rli",
+        "tú eliges todo riesgo - franquicia 600": "fq600",
+        "tú eliges todo riesgo - franquicia 150": "fq150",
+        "terceros básico": "basica",
+        "tú eliges todo riesgo - sin franquicia": "sf",
+        "vehicle": "vehicle",
+        "fecha 1 matriculacion": "fchMatricula",
+        "1ª de matriculacion": "fchMatricula",
+        # MT
+        "terceros básico": "basica",
+        # SA
+        "número asegurados": "nAseg",
+        "reembolso": "reembolso",
+        "garantía bucal": "bucal",
+        "asistencia sanitaria premier": "premier",
+        "asistencia sanitaria supra": "supra",
+        "asistencia sanitaria plus": "plus",
+        #MASC
+        "nombre y apellidos": "dueno",
+        "fecha de nacimiento": "fchNacimDueno",
+        "mascota": "mascota",
+        "nacimiento mascota": "fchNacimMasc",
+        "pureza": "pureza",
+        "raza": "raza",
+        "prima tarificada1": "prima1",
+        "prima tarificada2": "prima2",
+        "prima tarificada3": "prima3",
+        "prima tarificada4": "prima4",
+        "prima tarificada5": "prima5",
+        "prima tarificada6": "prima6"
+    }
+    scraper(keys,url)
 # scraper_vh('https://eur03.safelinks.protection.outlook.com/?url=http%3A%2F%2Fr.womtp.com%2Fc6sgylQIDqNPB3Td&data=05%7C01%7CMMOR31%40mediador.mapfre.com%7Cb908356f4d024106c00908dadda98c9e%7C5cc6c66dffb2469f9385cda840e57836%7C0%7C0%7C638066017524524649%7CUnknown%7CTWFpbGZsb3d8eyJWIjoiMC4wLjAwMDAiLCJQIjoiV2luMzIiLCJBTiI6Ik1haWwiLCJXVCI6Mn0%3D%7C3000%7C%7C%7C&sdata=tlzEa%2BFoUIQj4uUVbfj4Bmfq3y7IKLaCQUpHjMHD20Q%3D&reserved=0')

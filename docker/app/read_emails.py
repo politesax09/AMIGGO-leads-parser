@@ -9,30 +9,51 @@ import base64
 from bs4 import BeautifulSoup
 import re
 from myhttp import send_post
+from py_scraper.scraper import *
+import traceback
+import urllib
 
 
 # Define the SCOPES. If modifying it, delete the token.pickle file.
 SCOPES = ['https://www.googleapis.com/auth/gmail.readonly']
 
-def handle_email(soup):
+def handle_email(content):
+    soup = BeautifulSoup(content,"html.parser")
     codigo = getCodigo(soup)
-    url = getLink(soup)
+    url = getLink(content)
+    print('URL: ', url)
     if codigo != 'null' and url != 'null':
         fecha = getFecha(soup)
-        producto = getProducto(soup)
+        producto = getProducto(content)
     else:
         fecha = 'null'
         producto = 'null'
+    # print(producto)
     # TODO:
     # - escuchar emails -> Recibir email (cambiar servidor API por servidor de correo)
     # - Parsear email (id, tipo, url)
     # - Ejecutar tarea APIFY (traducir js a python)
     # - Traducir JSON output y enviar petición a make
     #       Es una peticion POST con el JSON de todos los datos del lead
-    send_post({'fecha': fecha,
-            'id': codigo,
-            'tipo': producto,
-            'url': url})
+    if producto.lower() == "coche":
+        scraper_vh(url)
+    elif producto.lower() == "hogar":
+        scraper_hg(url)
+    elif producto.lower() == "salud":
+        scraper_sa(url)
+    elif producto.lower() == "moto":
+        scraper_mt(url)
+    elif producto.lower() == "mascotas":
+        scraper_masc(url)
+    elif producto == "*":
+        scraper_all(url)
+    else:
+        print("No nos hacemos responsables")
+    # send_post({'fecha': fecha,
+    #         'id': codigo,
+    #         'tipo': producto,
+    #         # coche, hogar, salud, moto, mascotas, *
+    #         'url': url})
 
 
 
@@ -124,23 +145,59 @@ def getCodigo(soup):
     except:
         return 'null'
 
-def getProducto(soup):
-    soupStr = str(soup)
-    try:
-        index = soupStr.find('Producto:') + 10
-        index2 = soupStr.find(' ', index)
-        return (soupStr[index:index2]).strip()
-    except:
-        return 'null'
+def getProducto(soup: str):
+    # soupStr = str(soup)
+    # li_list = soup.find_all('li')
+    # print(soup)
+    # print(f"producto: {li_list}")
+    segment = "".join(soup.split("li")[1:-1]).lower()
+    if "coche" in segment:
+        return "coche"
+    elif "hogar" in segment:
+        return "hogar"
+    elif "salud" in segment:
+        return "salud"
+    elif "moto" in segment:
+        return "moto"
+    elif "mascotas" in segment:
+        return "mascotas"
+    elif "*" in segment:
+        return "*"
+
+    # try:
+    #     index = soupStr.find('Producto:') + 10
+    #     index2 = soupStr.find(' ', index)
+    #     return (soupStr[index:index2]).strip()
+    # except:
+    #     return 'null'
 
 def getLink(soup):
     try:
-        tag = soup.find_all('http:')[1]
-        link = tag.attrs['redirectsms.html?product']
-        link = link[link.rfind('&')+5:]
+        print("empezamos...")
+        # print(soup.find_all('a'))
+        # tag = soup.find_all('a')[0]
+        # print(soup)
+        tagStr = soup.split("url=3Dh=")
+        link = "patatas"
+        print(f"le tamañé {len(tagStr)}")
+        if len(tagStr) < 2:
+            tagStr = soup.split("url=3D")
+            tagStr = tagStr[1]
+            link = urllib.parse.unquote(tagStr.split("&")[0])
+        else:
+            tagStr = tagStr[1]
+            link = urllib.parse.unquote("h"+tagStr[2:].split("&")[0])
+        # link = link[link.rfind('&')+5:]
+        print(f"[[[[[{link}]]]]]")
         return link
     except:
+        print("Hemos petao")
+        traceback.print_exc()
         return 'null'
+
+# def get_link(soup):
+#     try:
+#         tag = soup.find_all('a')
 
 def getFechaReg(soup):
     soupStr = str(soup)

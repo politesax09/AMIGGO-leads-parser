@@ -4,6 +4,7 @@ import logging
 from aiosmtpd.controller import Controller
 from bs4 import BeautifulSoup
 from read_emails import handle_email
+import urllib
 
 class Handler:
     async def handle_RCPT(self, server, session, envelope, address, rcpt_options):
@@ -13,20 +14,21 @@ class Handler:
         return '250 OK'
 
     async def handle_DATA(self, server, session, envelope):
-        print('Message from %s' % envelope.mail_from)
-        print('Message for %s' % envelope.rcpt_tos)
-        print('Message data:\n')
-        for ln in envelope.content.decode('utf8', errors='replace').splitlines():
-            print(f'> {ln}'.strip())
-        print()
-        print('End of message')
-        # TODO: tratamiento del correo
-        handle_email(BeautifulSoup(envelope.content.decode('utf8', errors='replace'), "html.parser"))
+        # print('Message from %s' % envelope.mail_from)
+        # print('Message for %s' % envelope.rcpt_tos)
+        # print('Message data:\n')
+        # for ln in envelope.content.decode('utf8', errors='replace').splitlines():
+        #     print(f'> {ln}'.strip())
+        # print()
+        # print('End of message')
+        f = open("./salida.txt", "w")
+        f.write(envelope.content.decode("utf8"))
+        handle_email(envelope.content.decode("utf8"))
         # ----------------------------
         return '250 Message accepted for delivery'
 
 async def amain(loop):
-    cont = Controller(Handler(), port=8025,hostname="192.168.1.35")
+    cont = Controller(Handler(), port=8025,hostname="192.168.1.39")
     cont.start()
 
 
