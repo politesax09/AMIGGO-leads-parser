@@ -1,11 +1,3 @@
-# import the required libraries
-# from googleapiclient.discovery import build
-# from google_auth_oauthlib.flow import InstalledAppFlow
-# from google.auth.transport.requests import Request
-import pickle
-import os.path
-import base64
-# import email
 from bs4 import BeautifulSoup
 import re
 from myhttp import send_post
@@ -18,37 +10,57 @@ import urllib
 SCOPES = ['https://www.googleapis.com/auth/gmail.readonly']
 
 def handle_email(content):
+    print("ESTO ES MIO: \n\n\n\n\n")
+    print(content)
     soup = BeautifulSoup(content,"html.parser")
-    codigo = getCodigo(soup)
-    url = getLink(content)
-    print('URL: ', url)
-    if codigo != 'null' and url != 'null':
-        fecha = getFecha(soup)
-        producto = getProducto(content)
-    else:
-        fecha = 'null'
-        producto = 'null'
-    # print(producto)
-    # TODO:
-    # - escuchar emails -> Recibir email (cambiar servidor API por servidor de correo)
-    # - Parsear email (id, tipo, url)
-    # - Ejecutar tarea APIFY (traducir js a python)
-    # - Traducir JSON output y enviar petición a make
-    #       Es una peticion POST con el JSON de todos los datos del lead
-    if producto.lower() == "coche":
-        scraper_vh(url)
-    elif producto.lower() == "hogar":
-        scraper_hg(url)
-    elif producto.lower() == "salud":
-        scraper_sa(url)
-    elif producto.lower() == "moto":
-        scraper_mt(url)
-    elif producto.lower() == "mascotas":
-        scraper_masc(url)
-    elif producto == "*":
-        scraper_all(url)
+
+    results = {}
+    for elem in soup.find_all("li"):
+        if "fecha" in elem.text.lower():
+            results["fecha"] = elem.text.split(": ")[1]
+        elif "código" in elem.text.lower():
+            results["codigo"] = elem.text.split(": ")[1]
+        elif "producto" in elem.text.lower():
+            results["tipo"] = elem.text.split(": ")[1]
+
+    links = soup.find_all("a")
+    ok = False
+
+    for elem in links:
+        try:
+            results["url"] = elem.attrs["href"].split("url=")[1].split("&")[0]
+            break
+        except:
+            pass
+
+    # results["url"] = soup.find_all("a").attrs["href"].split("url=")[1].split("&")[0]
+
+    result = None
+    make_route = ""
+    if results["tipo"].lower() == "coche":
+        result = scraper_vh(results["url"])
+        make_route = "https://hook.eu1.make.com/05fhvgdyc310mrhio7b594tmxgh2oh08"
+    elif results["tipo"].lower() == "hogar":
+        result = scraper_hg(results["url"])
+        make_route = "https://hook.eu1.make.com/3x26j8yf7gexv7oifp51tljymo3579xx"
+    elif results["tipo"].lower() == "salud":
+        result = scraper_sa(results["url"])
+        make_route = "https://hook.eu1.make.com/8xqg35u5dolbrtxs6t2hsd5tf34aauo7"
+    elif results["tipo"].lower() == "moto":
+        result = scraper_mt(results["url"])
+        make_route = "https://hook.eu1.make.com/1jwc474jipjwc1v5zrbhzo80kza2misd"
+    elif results["tipo"].lower() == "mascotas":
+        result = scraper_masc(results["url"])
+        make_route = "https://hook.eu1.make.com/atqnslps9ekqwm6owaxa9mgvyh2iz55g"
+    elif results["tipo"] == "*":
+        result = scraper_all(results["url"])
+        make_route = "https://hook.eu1.make.com/7ktuy7bxoqxgy86v5o4d3w58dw8secsr"
     else:
         print("No nos hacemos responsables")
+
+    result.update(results)
+    print(result)
+    send_post(make_route,result)
     # send_post({'fecha': fecha,
     #         'id': codigo,
     #         'tipo': producto,
@@ -137,11 +149,10 @@ def getFecha(soup):
         return 'null'
 
 def getCodigo(soup):
-    soupStr = str(soup)
     try:
-        index = soupStr.find('Código: ') + 8
-        index2 = soupStr.find(' ', index)
-        return (soupStr[index:index2]).strip()
+        index = soup.find('Código: ') + 8
+        index2 = soup.find(' ', index)
+        return soup
     except:
         return 'null'
 
@@ -177,19 +188,13 @@ def getLink(soup):
         # print(soup.find_all('a'))
         # tag = soup.find_all('a')[0]
         # print(soup)
-        tagStr = soup.split("url=3Dh=")
-        link = "patatas"
-        print(f"le tamañé {len(tagStr)}")
-        if len(tagStr) < 2:
-            tagStr = soup.split("url=3D")
-            tagStr = tagStr[1]
-            link = urllib.parse.unquote(tagStr.split("&")[0])
-        else:
-            tagStr = tagStr[1]
-            link = urllib.parse.unquote("h"+tagStr[2:].split("&")[0])
+        tagStr = soup.split("url=3D")
+        link = "patatas" 
+        tagStr = tagStr[1]
+        link = urllib.parse.unquote(tagStr.split("&")[0])
         # link = link[link.rfind('&')+5:]
         print(f"[[[[[{link}]]]]]")
-        return link
+        return link.replace("\r","").replace("\n","").replace("=","")
     except:
         print("Hemos petao")
         traceback.print_exc()

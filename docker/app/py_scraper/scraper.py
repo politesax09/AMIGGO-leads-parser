@@ -11,8 +11,11 @@ def scraper(campos: dict,url):
     labels = driver.find_elements(by=By.CLASS_NAME, value='control-label')
     inputs = driver.find_elements(by=By.TAG_NAME,value='input')
     result = {}
-    if "vehicle" in keys:
-        result["vehicle"] = "-"
+    for id in set(campos.values()):
+        result[id] = "-"
+    # f = open("./salida.txt", "w")
+    # print(json.dumps(result,indent=4))
+    # raise Exception("patatas")
     for i,elem in enumerate(labels):
         if elem.text.lower() in keys:
             result[campos[elem.text.lower()]] = inputs[i].get_attribute('value')
@@ -23,7 +26,9 @@ def scraper(campos: dict,url):
                 else: result["vehicle"] += ' | '
                 result["vehicle"] += inputs[i].get_attribute('value')
     
+    # f.write(json.dumps(result,indent=4))
     print(json.dumps(result, indent=4))
+    return result
 
 def scraper_hg(url):
     # diccionario {value del label: nombre de variable que espera MAKE}
@@ -36,7 +41,7 @@ def scraper_hg(url):
         "uso": "uso",
         "hipoteca": "hipoteca",
         "metros construidos": "metros",
-        "edificio": "tipo",
+        "edificio": "tipohg",
         "año construccion": "anoConst",
         "anio construccion": "anoConst",
         "capital contenido propuesto": "contenido",
@@ -52,8 +57,10 @@ def scraper_hg(url):
         "hogar platino": "hp",
         "modalidad total": "ht",
         "hogar total": "ht",
+        "cod presupuesto": "codPresup"
+
     }
-    scraper(keys,url)
+    return scraper(keys,url)
 
 def scraper_vh(url):
     keys = {
@@ -74,13 +81,13 @@ def scraper_vh(url):
         "fecha 1 matriculacion": "fchMatricula",
         "1ª de matriculacion": "fchMatricula"
     }
-    scraper(keys,url)
+    return scraper(keys,url)
 
 def scraper_masc(url):
     keys = {
 
     }
-    scraper(keys,url)
+    return scraper(keys,url)
 
 def scraper_mt(url):
     keys = {
@@ -98,7 +105,7 @@ def scraper_mt(url):
         "fecha 1 matriculacion": "fchMatricula",
         "1ª de matriculacion": "fchMatricula"
     }
-    scraper(keys,url)
+    return scraper(keys,url)
 
 def scraper_sa(url):
     keys = {
@@ -112,7 +119,7 @@ def scraper_sa(url):
         "asistencia sanitaria supra": "supra",
         "asistencia sanitaria plus": "plus"
     }
-    scraper(keys,url)
+    return scraper(keys,url)
 
 def scraper_masc(url):
     keys = {
@@ -131,7 +138,7 @@ def scraper_masc(url):
         "prima tarificada5": "prima5",
         "prima tarificada6": "prima6",
     }
-    scraper(keys,url)
+    return scraper(keys,url)
 
 def scraper_all(url):
     keys = {
@@ -196,5 +203,5 @@ def scraper_all(url):
         "prima tarificada5": "prima5",
         "prima tarificada6": "prima6"
     }
-    scraper(keys,url)
+    return scraper(keys,url)
 # scraper_vh('https://eur03.safelinks.protection.outlook.com/?url=http%3A%2F%2Fr.womtp.com%2Fc6sgylQIDqNPB3Td&data=05%7C01%7CMMOR31%40mediador.mapfre.com%7Cb908356f4d024106c00908dadda98c9e%7C5cc6c66dffb2469f9385cda840e57836%7C0%7C0%7C638066017524524649%7CUnknown%7CTWFpbGZsb3d8eyJWIjoiMC4wLjAwMDAiLCJQIjoiV2luMzIiLCJBTiI6Ik1haWwiLCJXVCI6Mn0%3D%7C3000%7C%7C%7C&sdata=tlzEa%2BFoUIQj4uUVbfj4Bmfq3y7IKLaCQUpHjMHD20Q%3D&reserved=0')
