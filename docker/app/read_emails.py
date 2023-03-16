@@ -22,6 +22,7 @@ def handle_email(content):
             results["codigo"] = elem.text.split(": ")[1]
         elif "producto" in elem.text.lower():
             results["tipo"] = elem.text.split(": ")[1]
+            print(f"este es el producto: [{results['tipo']}]")
 
     links = soup.find_all("a")
     ok = False
@@ -52,11 +53,12 @@ def handle_email(content):
     elif results["tipo"].lower() == "mascotas":
         result = scraper_masc(results["url"])
         make_route = "https://hook.eu1.make.com/atqnslps9ekqwm6owaxa9mgvyh2iz55g"
-    elif results["tipo"] == "*":
+    elif results["tipo"] in ("*",""):
         result = scraper_all(results["url"])
         make_route = "https://hook.eu1.make.com/7ktuy7bxoqxgy86v5o4d3w58dw8secsr"
     else:
         print("No nos hacemos responsables")
+        return
 
     result.update(results)
     print(result)

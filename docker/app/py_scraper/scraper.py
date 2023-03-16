@@ -110,6 +110,7 @@ def scraper_mt(url):
 def scraper_sa(url):
     keys = {
         "codrm": "id",
+        "documento": "dni",
         "nombre y apellidos": "nombre",
         "codigo postal": "cp",
         "número asegurados": "nAseg",
@@ -125,6 +126,7 @@ def scraper_masc(url):
     keys = {
         "codigo postal": "cp",
         "nombre y apellidos": "dueno",
+        "documento": "dni",
         "fecha de nacimiento": "fchNacimDueno",
         "codrm": "id",
         "mascota": "mascota",
@@ -151,7 +153,7 @@ def scraper_all(url):
         "uso": "uso",
         "hipoteca": "hipoteca",
         "metros construidos": "metros",
-        "edificio": "tipo",
+        "edificio": "tipohg",
         "año construccion": "anoConst",
         "anio construccion": "anoConst",
         "capital contenido propuesto": "contenido",
@@ -180,8 +182,6 @@ def scraper_all(url):
         "vehicle": "vehicle",
         "fecha 1 matriculacion": "fchMatricula",
         "1ª de matriculacion": "fchMatricula",
-        # MT
-        "terceros básico": "basica",
         # SA
         "número asegurados": "nAseg",
         "reembolso": "reembolso",
@@ -190,8 +190,6 @@ def scraper_all(url):
         "asistencia sanitaria supra": "supra",
         "asistencia sanitaria plus": "plus",
         #MASC
-        "nombre y apellidos": "dueno",
-        "fecha de nacimiento": "fchNacimDueno",
         "mascota": "mascota",
         "nacimiento mascota": "fchNacimMasc",
         "pureza": "pureza",
