@@ -36,8 +36,12 @@ def handle_email(content):
 
     # results["url"] = soup.find_all("a").attrs["href"].split("url=")[1].split("&")[0]
 
+    if "tipo" not in results:
+        return
+
     result = None
     make_route = ""
+
     if results["tipo"].lower() == "coche":
         result = scraper_vh(results["url"])
         make_route = "https://hook.eu1.make.com/05fhvgdyc310mrhio7b594tmxgh2oh08"
